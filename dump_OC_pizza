@@ -1,0 +1,1605 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.3
+-- Dumped by pg_dump version 11.1
+
+-- Started on 2019-02-11 22:02:43
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 219 (class 1259 OID 18361)
+-- Name: adresse; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.adresse (
+    adresse_id integer NOT NULL,
+    client_id integer NOT NULL,
+    destinataire character varying(100) NOT NULL,
+    complement_destinataire character varying(100),
+    voie character varying(100) NOT NULL,
+    complement_voie character varying(100),
+    complement_etage character varying(100),
+    code_postal numeric(5,0) NOT NULL,
+    localite character varying(100) NOT NULL,
+    adresse_facturation boolean NOT NULL
+);
+
+
+ALTER TABLE public.adresse OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 18359)
+-- Name: adresse_id_seq_1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.adresse_id_seq_1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.adresse_id_seq_1 OWNER TO postgres;
+
+--
+-- TOC entry 3008 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: adresse_id_seq_1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.adresse_id_seq_1 OWNED BY public.adresse.adresse_id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 18339)
+-- Name: article; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.article (
+    article_reference character varying NOT NULL,
+    nom character varying NOT NULL,
+    description character varying NOT NULL,
+    prix_ht numeric(10,2) NOT NULL,
+    tva_100 numeric(6,4) NOT NULL,
+    categorie_id integer NOT NULL,
+    stock_id integer,
+    recette_id integer
+);
+
+
+ALTER TABLE public.article OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 18337)
+-- Name: article_reference_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.article_reference_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.article_reference_seq OWNER TO postgres;
+
+--
+-- TOC entry 3009 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: article_reference_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.article_reference_seq OWNED BY public.article.article_reference;
+
+
+--
+-- TOC entry 209 (class 1259 OID 18309)
+-- Name: categorie; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.categorie (
+    categorie_id integer NOT NULL,
+    parent_id integer,
+    nom character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.categorie OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 18307)
+-- Name: categorie_id_seq_1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.categorie_id_seq_1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categorie_id_seq_1 OWNER TO postgres;
+
+--
+-- TOC entry 3010 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: categorie_id_seq_1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.categorie_id_seq_1 OWNED BY public.categorie.categorie_id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 18350)
+-- Name: client; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.client (
+    client_id integer NOT NULL,
+    nom character varying(100) NOT NULL,
+    prenom character varying(100) NOT NULL,
+    adresse_mail character varying(100) NOT NULL,
+    num_tel numeric NOT NULL,
+    mot_de_passe character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.client OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 18348)
+-- Name: client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.client_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.client_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3011 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.client_id_seq OWNED BY public.client.client_id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 18372)
+-- Name: commande; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.commande (
+    commande_reference integer NOT NULL,
+    client_id integer NOT NULL,
+    roleemploye_id character varying,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.commande OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 18370)
+-- Name: commande_reference_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.commande_reference_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.commande_reference_seq OWNER TO postgres;
+
+--
+-- TOC entry 3012 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: commande_reference_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.commande_reference_seq OWNED BY public.commande.commande_reference;
+
+
+--
+-- TOC entry 213 (class 1259 OID 18328)
+-- Name: composition; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.composition (
+    composition_id integer NOT NULL,
+    recette_id integer NOT NULL,
+    ingredient_reference character varying NOT NULL
+);
+
+
+ALTER TABLE public.composition OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 18326)
+-- Name: composition_composition_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.composition_composition_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.composition_composition_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3013 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: composition_composition_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.composition_composition_id_seq OWNED BY public.composition.composition_id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 18279)
+-- Name: employe; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.employe (
+    employe_id integer NOT NULL,
+    nom character varying(100) NOT NULL,
+    prenom character varying(100) NOT NULL,
+    adresse_mail character varying(100) NOT NULL,
+    num_tel numeric NOT NULL,
+    mot_de_passe character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.employe OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 18277)
+-- Name: employe_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.employe_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.employe_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3014 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: employe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.employe_id_seq OWNED BY public.employe.employe_id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 18410)
+-- Name: facture; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.facture (
+    facture_reference character varying NOT NULL,
+    livraison_id integer NOT NULL,
+    date date NOT NULL,
+    total_ht numeric(10,2) NOT NULL,
+    total_tva numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE public.facture OWNER TO postgres;
+
+--
+-- TOC entry 228 (class 1259 OID 18408)
+-- Name: facture_reference_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.facture_reference_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.facture_reference_seq OWNER TO postgres;
+
+--
+-- TOC entry 3015 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: facture_reference_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.facture_reference_seq OWNED BY public.facture.facture_reference;
+
+
+--
+-- TOC entry 211 (class 1259 OID 18317)
+-- Name: ingredient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ingredient (
+    ingredient_reference character varying NOT NULL,
+    stock_id integer NOT NULL,
+    nom character varying NOT NULL,
+    quantite integer NOT NULL
+);
+
+
+ALTER TABLE public.ingredient OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 18315)
+-- Name: ingredient_reference_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ingredient_reference_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ingredient_reference_seq OWNER TO postgres;
+
+--
+-- TOC entry 3016 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: ingredient_reference_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ingredient_reference_seq OWNED BY public.ingredient.ingredient_reference;
+
+
+--
+-- TOC entry 225 (class 1259 OID 18391)
+-- Name: lignecommande; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.lignecommande (
+    lignecommande_id integer NOT NULL,
+    commande_reference integer NOT NULL,
+    article_reference character varying NOT NULL,
+    quantite integer NOT NULL
+);
+
+
+ALTER TABLE public.lignecommande OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 18389)
+-- Name: lignecommande_lignecommande_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.lignecommande_lignecommande_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lignecommande_lignecommande_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3017 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: lignecommande_lignecommande_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.lignecommande_lignecommande_id_seq OWNED BY public.lignecommande.lignecommande_id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 18402)
+-- Name: livraison; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.livraison (
+    livraison_id integer NOT NULL,
+    commande_reference integer NOT NULL,
+    adresse_id integer NOT NULL,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.livraison OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 18400)
+-- Name: livraison_id_seq_1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.livraison_id_seq_1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.livraison_id_seq_1 OWNER TO postgres;
+
+--
+-- TOC entry 3018 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: livraison_id_seq_1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.livraison_id_seq_1 OWNED BY public.livraison.livraison_id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 18268)
+-- Name: recette; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.recette (
+    recette_id integer NOT NULL,
+    nom character varying(100) NOT NULL,
+    recette character varying(1000) NOT NULL
+);
+
+
+ALTER TABLE public.recette OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 18266)
+-- Name: recette_id_seq_1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.recette_id_seq_1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.recette_id_seq_1 OWNER TO postgres;
+
+--
+-- TOC entry 3019 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: recette_id_seq_1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.recette_id_seq_1 OWNED BY public.recette.recette_id;
+
+
+--
+-- TOC entry 205 (class 1259 OID 18290)
+-- Name: role; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.role (
+    role_id integer NOT NULL,
+    nom character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.role OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 18288)
+-- Name: role_role_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.role_role_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.role_role_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3020 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: role_role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.role_role_id_seq OWNED BY public.role.role_id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 18298)
+-- Name: roleemploye; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.roleemploye (
+    roleemploye_id character varying NOT NULL,
+    role_id integer NOT NULL,
+    employe_id integer NOT NULL
+);
+
+
+ALTER TABLE public.roleemploye OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 18296)
+-- Name: roleemploye_roleemploye_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.roleemploye_roleemploye_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.roleemploye_roleemploye_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3021 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: roleemploye_roleemploye_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.roleemploye_roleemploye_id_seq OWNED BY public.roleemploye.roleemploye_id;
+
+
+--
+-- TOC entry 197 (class 1259 OID 18249)
+-- Name: statut; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.statut (
+    statut_id integer NOT NULL,
+    status character varying NOT NULL
+);
+
+
+ALTER TABLE public.statut OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 18247)
+-- Name: statut_statut_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.statut_statut_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.statut_statut_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3022 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: statut_statut_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.statut_statut_id_seq OWNED BY public.statut.statut_id;
+
+
+--
+-- TOC entry 223 (class 1259 OID 18383)
+-- Name: statutcommande; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.statutcommande (
+    statutcommande_id integer NOT NULL,
+    commande_reference integer NOT NULL,
+    statut_id integer NOT NULL,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.statutcommande OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 18381)
+-- Name: statutcommande_statutcommande_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.statutcommande_statutcommande_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.statutcommande_statutcommande_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3023 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: statutcommande_statutcommande_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.statutcommande_statutcommande_id_seq OWNED BY public.statutcommande.statutcommande_id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 18260)
+-- Name: stock; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.stock (
+    stock_id integer NOT NULL,
+    nom character varying(100) NOT NULL,
+    quantite integer NOT NULL,
+    unite character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.stock OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 18258)
+-- Name: stock_id_seq_2; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.stock_id_seq_2
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stock_id_seq_2 OWNER TO postgres;
+
+--
+-- TOC entry 3024 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: stock_id_seq_2; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.stock_id_seq_2 OWNED BY public.stock.stock_id;
+
+
+--
+-- TOC entry 2789 (class 2604 OID 18364)
+-- Name: adresse adresse_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.adresse ALTER COLUMN adresse_id SET DEFAULT nextval('public.adresse_id_seq_1'::regclass);
+
+
+--
+-- TOC entry 2787 (class 2604 OID 18342)
+-- Name: article article_reference; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article ALTER COLUMN article_reference SET DEFAULT nextval('public.article_reference_seq'::regclass);
+
+
+--
+-- TOC entry 2784 (class 2604 OID 18312)
+-- Name: categorie categorie_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categorie ALTER COLUMN categorie_id SET DEFAULT nextval('public.categorie_id_seq_1'::regclass);
+
+
+--
+-- TOC entry 2788 (class 2604 OID 18353)
+-- Name: client client_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.client ALTER COLUMN client_id SET DEFAULT nextval('public.client_id_seq'::regclass);
+
+
+--
+-- TOC entry 2790 (class 2604 OID 18375)
+-- Name: commande commande_reference; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.commande ALTER COLUMN commande_reference SET DEFAULT nextval('public.commande_reference_seq'::regclass);
+
+
+--
+-- TOC entry 2786 (class 2604 OID 18331)
+-- Name: composition composition_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.composition ALTER COLUMN composition_id SET DEFAULT nextval('public.composition_composition_id_seq'::regclass);
+
+
+--
+-- TOC entry 2781 (class 2604 OID 18282)
+-- Name: employe employe_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employe ALTER COLUMN employe_id SET DEFAULT nextval('public.employe_id_seq'::regclass);
+
+
+--
+-- TOC entry 2794 (class 2604 OID 18413)
+-- Name: facture facture_reference; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facture ALTER COLUMN facture_reference SET DEFAULT nextval('public.facture_reference_seq'::regclass);
+
+
+--
+-- TOC entry 2785 (class 2604 OID 18320)
+-- Name: ingredient ingredient_reference; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ingredient ALTER COLUMN ingredient_reference SET DEFAULT nextval('public.ingredient_reference_seq'::regclass);
+
+
+--
+-- TOC entry 2792 (class 2604 OID 18394)
+-- Name: lignecommande lignecommande_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lignecommande ALTER COLUMN lignecommande_id SET DEFAULT nextval('public.lignecommande_lignecommande_id_seq'::regclass);
+
+
+--
+-- TOC entry 2793 (class 2604 OID 18405)
+-- Name: livraison livraison_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livraison ALTER COLUMN livraison_id SET DEFAULT nextval('public.livraison_id_seq_1'::regclass);
+
+
+--
+-- TOC entry 2780 (class 2604 OID 18271)
+-- Name: recette recette_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recette ALTER COLUMN recette_id SET DEFAULT nextval('public.recette_id_seq_1'::regclass);
+
+
+--
+-- TOC entry 2782 (class 2604 OID 18293)
+-- Name: role role_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role ALTER COLUMN role_id SET DEFAULT nextval('public.role_role_id_seq'::regclass);
+
+
+--
+-- TOC entry 2783 (class 2604 OID 18301)
+-- Name: roleemploye roleemploye_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roleemploye ALTER COLUMN roleemploye_id SET DEFAULT nextval('public.roleemploye_roleemploye_id_seq'::regclass);
+
+
+--
+-- TOC entry 2778 (class 2604 OID 18252)
+-- Name: statut statut_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statut ALTER COLUMN statut_id SET DEFAULT nextval('public.statut_statut_id_seq'::regclass);
+
+
+--
+-- TOC entry 2791 (class 2604 OID 18386)
+-- Name: statutcommande statutcommande_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statutcommande ALTER COLUMN statutcommande_id SET DEFAULT nextval('public.statutcommande_statutcommande_id_seq'::regclass);
+
+
+--
+-- TOC entry 2779 (class 2604 OID 18263)
+-- Name: stock stock_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock ALTER COLUMN stock_id SET DEFAULT nextval('public.stock_id_seq_2'::regclass);
+
+
+--
+-- TOC entry 2992 (class 0 OID 18361)
+-- Dependencies: 219
+-- Data for Name: adresse; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.adresse (adresse_id, client_id, destinataire, complement_destinataire, voie, complement_voie, complement_etage, code_postal, localite, adresse_facturation) FROM stdin;
+1	1	Martinez Francois	\N	5 rue de la requete	\N	\N	75011	Paris	t
+2	2	Simon Cussoné	\N	5 rue de l heure	\N	\N	75012	Paris	t
+3	3	Robert Hue	\N	5 rue de l heure	\N	\N	75011	Paris	t
+4	3	Robert Hue	chez Pierrette Michel	30A rue saint Paul	\N	4 eme etage	75010	Paris	f
+\.
+
+
+--
+-- TOC entry 2988 (class 0 OID 18339)
+-- Dependencies: 215
+-- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.article (article_reference, nom, description, prix_ht, tva_100, categorie_id, stock_id, recette_id) FROM stdin;
+1	magarita pate fine	Savoureuse pizza à pâte fine sur base tomate au jambon,champignons et mozzarella	10.00	5.5000	2	\N	1
+2	magarita pate epaisse	Savoureuse pizza à la pâte américaine sur base tomate au jambon,champignons et mozzarella	12.00	5.5000	2	\N	2
+3	calzone pate fine	Savoureuse pizza à pâte fine en chausson sur base tomate au jambon,champignons et mozzarella	11.00	5.5000	2	\N	3
+4	calzone pate epaisse	Savoureuse pizza à la pâte américaine en chausson sur base tomate au jambon,champignons et mozzarella	13.00	5.5000	2	\N	4
+5	caco cola 33ml	boisson pétillante rafréchissante au cola	2.00	5.5000	3	14	\N
+6	fanto 33ml	boisson pétillante rafréchissante à l orange avec des vrai faux fruit dedans	2.00	5.5000	3	16	\N
+7	sprute 33ml	limonade rafréchissante au citron	2.00	5.5000	3	17	\N
+8	glace mika	cône au chocholat	3.00	5.5000	4	18	\N
+9	brownie papy brossette	gâteau au chocolat au lait	1.00	5.5000	4	20	\N
+\.
+
+
+--
+-- TOC entry 2982 (class 0 OID 18309)
+-- Dependencies: 209
+-- Data for Name: categorie; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.categorie (categorie_id, parent_id, nom) FROM stdin;
+1	\N	menu principal
+2	1	pizza
+3	1	boisson
+4	1	dessert
+\.
+
+
+--
+-- TOC entry 2990 (class 0 OID 18350)
+-- Dependencies: 217
+-- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.client (client_id, nom, prenom, adresse_mail, num_tel, mot_de_passe) FROM stdin;
+1	Martinez	François	martinezfrancois@bla.com	123456789	lemotdepasse
+2	Simon	Cussoné	SimonCussoné@blu.net	9876543210	lemotdepousse
+3	Robert	Hue	Robertdu75@bla.net	1111111111	cherchetoujours
+\.
+
+
+--
+-- TOC entry 2994 (class 0 OID 18372)
+-- Dependencies: 221
+-- Data for Name: commande; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.commande (commande_reference, client_id, roleemploye_id, date) FROM stdin;
+1	1	4	2019-01-30 20:30:02
+2	2	\N	2019-01-31 11:58:12
+3	3	\N	2019-01-31 12:00:20
+\.
+
+
+--
+-- TOC entry 2986 (class 0 OID 18328)
+-- Dependencies: 213
+-- Data for Name: composition; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.composition (composition_id, recette_id, ingredient_reference) FROM stdin;
+1	1	1
+2	3	1
+3	2	2
+4	4	2
+5	1	3
+6	2	3
+7	3	3
+8	4	3
+9	1	7
+10	2	7
+11	3	7
+12	4	7
+13	1	8
+14	2	8
+15	3	8
+16	4	8
+17	1	9
+18	2	9
+19	3	9
+20	4	9
+21	3	13
+22	4	13
+\.
+
+
+--
+-- TOC entry 2976 (class 0 OID 18279)
+-- Dependencies: 203
+-- Data for Name: employe; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.employe (employe_id, nom, prenom, adresse_mail, num_tel, mot_de_passe) FROM stdin;
+1	Dupont	inconnu	dupont@pj_de_paris.gouv	123456789	jediraismemeplus
+2	Dupond	inconnu	dupond@pj_de_paris.gouv	123456789	jediraismemeplus
+3	Tournesol	Tryphon	tournesol@syldavie.sy	11223344	zouave
+4	Castafiore	Bianca	castabianca@opera_milanais.it	9876543210	cne_krapock
+\.
+
+
+--
+-- TOC entry 3002 (class 0 OID 18410)
+-- Dependencies: 229
+-- Data for Name: facture; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.facture (facture_reference, livraison_id, date, total_ht, total_tva) FROM stdin;
+1	1	2019-01-30	22.00	1.21
+\.
+
+
+--
+-- TOC entry 2984 (class 0 OID 18317)
+-- Dependencies: 211
+-- Data for Name: ingredient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ingredient (ingredient_reference, stock_id, nom, quantite) FROM stdin;
+1	1	pate à pizza fine	1
+2	2	pate à pizza épaisse	1
+3	3	sauce tomate	0
+4	4	tomate	30
+5	5	lardon	20
+6	6	crème fraiche	1
+7	7	champignon	40
+8	8	jambon	30
+9	9	mozzaella	30
+10	10	ognion	20
+11	10	viande haché	30
+12	12	poivron	20
+13	13	oeuf	1
+\.
+
+
+--
+-- TOC entry 2998 (class 0 OID 18391)
+-- Dependencies: 225
+-- Data for Name: lignecommande; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.lignecommande (lignecommande_id, commande_reference, article_reference, quantite) FROM stdin;
+1	1	1	2
+2	1	5	1
+3	2	2	1
+4	2	4	1
+5	3	1	3
+6	3	6	3
+\.
+
+
+--
+-- TOC entry 3000 (class 0 OID 18402)
+-- Dependencies: 227
+-- Data for Name: livraison; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.livraison (livraison_id, commande_reference, adresse_id, date) FROM stdin;
+1	1	1	2019-01-30 20:52:58
+\.
+
+
+--
+-- TOC entry 2974 (class 0 OID 18268)
+-- Dependencies: 201
+-- Data for Name: recette; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.recette (recette_id, nom, recette) FROM stdin;
+1	margarita pate fine	étaler la pâte fine, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage
+2	margarita pate épaisse	étaler la pâte épaisse, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage
+3	calzone pate fine	étaler la pâte fine, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage, cassez un oeuf, repliez la pâte
+4	calzone pate épaisse	étaler la pâte épaisse, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage, cassez un oeuf, repliez la pâte
+\.
+
+
+--
+-- TOC entry 2978 (class 0 OID 18290)
+-- Dependencies: 205
+-- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.role (role_id, nom) FROM stdin;
+1	cuisinier
+2	livreur
+3	hôte de caisse
+4	gérant
+\.
+
+
+--
+-- TOC entry 2980 (class 0 OID 18298)
+-- Dependencies: 207
+-- Data for Name: roleemploye; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.roleemploye (roleemploye_id, role_id, employe_id) FROM stdin;
+1	1	1
+2	1	2
+3	2	3
+4	3	1
+5	3	2
+6	4	4
+\.
+
+
+--
+-- TOC entry 2970 (class 0 OID 18249)
+-- Dependencies: 197
+-- Data for Name: statut; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.statut (statut_id, status) FROM stdin;
+1	dans le panier
+2	commandé
+3	préparation en cours
+4	préparé
+5	en cours de livraison
+6	terminé
+\.
+
+
+--
+-- TOC entry 2996 (class 0 OID 18383)
+-- Dependencies: 223
+-- Data for Name: statutcommande; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.statutcommande (statutcommande_id, commande_reference, statut_id, date) FROM stdin;
+1	1	1	2019-01-30 20:28:37
+2	1	2	2019-01-30 20:30:02
+3	1	3	2019-01-30 20:30:42
+4	1	4	2019-01-30 20:45:42
+5	1	5	2019-01-30 20:47:01
+6	1	6	2019-01-30 20:52:58
+7	2	1	2019-01-31 11:56:11
+8	2	2	2019-01-31 11:58:12
+9	2	3	2019-01-31 12:01:03
+10	3	1	2019-01-31 11:58:00
+11	3	2	2019-01-31 12:00:20
+12	3	3	2019-01-31 12:01:04
+\.
+
+
+--
+-- TOC entry 2972 (class 0 OID 18260)
+-- Dependencies: 199
+-- Data for Name: stock; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.stock (stock_id, nom, quantite, unite) FROM stdin;
+1	pate à pizza fine	400	unité
+2	pate à pizza épaisse	400	unité
+3	sauce tomate	100	litre
+4	tomate	3000	gramme
+5	lardon	2000	gramme
+6	crème fraiche	30	pot
+7	champignon	4000	gramme
+8	jambon	5000	gramme
+9	mozzaella	3000	gramme
+10	ognion	2000	gramme
+11	viande haché	3000	gramme
+12	poivron	2000	gramme
+13	oeuf	250	unité
+14	caco cola 33ml	300	unité
+15	caco cola 125ml	50	unité
+16	fanto 33ml	300	unité
+17	sprute 33ml	100	unité
+18	glace mika	50	unité
+19	glace hagendouce	250	unité
+20	brownie papy brossette	100	unité
+21	sucette	250	unité
+\.
+
+
+--
+-- TOC entry 3025 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: adresse_id_seq_1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.adresse_id_seq_1', 4, true);
+
+
+--
+-- TOC entry 3026 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: article_reference_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.article_reference_seq', 9, true);
+
+
+--
+-- TOC entry 3027 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: categorie_id_seq_1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categorie_id_seq_1', 4, true);
+
+
+--
+-- TOC entry 3028 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.client_id_seq', 3, true);
+
+
+--
+-- TOC entry 3029 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: commande_reference_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.commande_reference_seq', 3, true);
+
+
+--
+-- TOC entry 3030 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: composition_composition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.composition_composition_id_seq', 22, true);
+
+
+--
+-- TOC entry 3031 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: employe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.employe_id_seq', 4, true);
+
+
+--
+-- TOC entry 3032 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: facture_reference_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.facture_reference_seq', 1, true);
+
+
+--
+-- TOC entry 3033 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: ingredient_reference_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ingredient_reference_seq', 13, true);
+
+
+--
+-- TOC entry 3034 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: lignecommande_lignecommande_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.lignecommande_lignecommande_id_seq', 6, true);
+
+
+--
+-- TOC entry 3035 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: livraison_id_seq_1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.livraison_id_seq_1', 1, true);
+
+
+--
+-- TOC entry 3036 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: recette_id_seq_1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.recette_id_seq_1', 4, true);
+
+
+--
+-- TOC entry 3037 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: role_role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.role_role_id_seq', 4, true);
+
+
+--
+-- TOC entry 3038 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: roleemploye_roleemploye_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.roleemploye_roleemploye_id_seq', 6, true);
+
+
+--
+-- TOC entry 3039 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: statut_statut_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.statut_statut_id_seq', 6, true);
+
+
+--
+-- TOC entry 3040 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: statutcommande_statutcommande_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.statutcommande_statutcommande_id_seq', 12, true);
+
+
+--
+-- TOC entry 3041 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: stock_id_seq_2; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.stock_id_seq_2', 21, true);
+
+
+--
+-- TOC entry 2818 (class 2606 OID 18369)
+-- Name: adresse adresse_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.adresse
+    ADD CONSTRAINT adresse_pk PRIMARY KEY (adresse_id);
+
+
+--
+-- TOC entry 2814 (class 2606 OID 18347)
+-- Name: article article_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT article_pk PRIMARY KEY (article_reference);
+
+
+--
+-- TOC entry 2808 (class 2606 OID 18314)
+-- Name: categorie categorie_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categorie
+    ADD CONSTRAINT categorie_pk PRIMARY KEY (categorie_id);
+
+
+--
+-- TOC entry 2816 (class 2606 OID 18358)
+-- Name: client client_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.client
+    ADD CONSTRAINT client_pk PRIMARY KEY (client_id);
+
+
+--
+-- TOC entry 2820 (class 2606 OID 18380)
+-- Name: commande commande_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.commande
+    ADD CONSTRAINT commande_pk PRIMARY KEY (commande_reference);
+
+
+--
+-- TOC entry 2812 (class 2606 OID 18336)
+-- Name: composition composition_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.composition
+    ADD CONSTRAINT composition_pk PRIMARY KEY (composition_id);
+
+
+--
+-- TOC entry 2802 (class 2606 OID 18287)
+-- Name: employe employe_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employe
+    ADD CONSTRAINT employe_pk PRIMARY KEY (employe_id);
+
+
+--
+-- TOC entry 2828 (class 2606 OID 18418)
+-- Name: facture facture_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facture
+    ADD CONSTRAINT facture_pk PRIMARY KEY (facture_reference);
+
+
+--
+-- TOC entry 2810 (class 2606 OID 18325)
+-- Name: ingredient ingredient_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ingredient
+    ADD CONSTRAINT ingredient_pk PRIMARY KEY (ingredient_reference);
+
+
+--
+-- TOC entry 2824 (class 2606 OID 18399)
+-- Name: lignecommande lignecommande_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lignecommande
+    ADD CONSTRAINT lignecommande_pk PRIMARY KEY (lignecommande_id);
+
+
+--
+-- TOC entry 2826 (class 2606 OID 18407)
+-- Name: livraison livraison_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livraison
+    ADD CONSTRAINT livraison_pk PRIMARY KEY (livraison_id);
+
+
+--
+-- TOC entry 2800 (class 2606 OID 18276)
+-- Name: recette recette_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recette
+    ADD CONSTRAINT recette_pk PRIMARY KEY (recette_id);
+
+
+--
+-- TOC entry 2804 (class 2606 OID 18295)
+-- Name: role role_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role
+    ADD CONSTRAINT role_pk PRIMARY KEY (role_id);
+
+
+--
+-- TOC entry 2806 (class 2606 OID 18306)
+-- Name: roleemploye roleemploye_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roleemploye
+    ADD CONSTRAINT roleemploye_pk PRIMARY KEY (roleemploye_id);
+
+
+--
+-- TOC entry 2796 (class 2606 OID 18257)
+-- Name: statut statut_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statut
+    ADD CONSTRAINT statut_pk PRIMARY KEY (statut_id);
+
+
+--
+-- TOC entry 2822 (class 2606 OID 18388)
+-- Name: statutcommande statutcommande_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statutcommande
+    ADD CONSTRAINT statutcommande_pk PRIMARY KEY (statutcommande_id);
+
+
+--
+-- TOC entry 2798 (class 2606 OID 18265)
+-- Name: stock stock_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock
+    ADD CONSTRAINT stock_pk PRIMARY KEY (stock_id);
+
+
+--
+-- TOC entry 2845 (class 2606 OID 18489)
+-- Name: livraison adresse_livraison_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livraison
+    ADD CONSTRAINT adresse_livraison_fk FOREIGN KEY (adresse_id) REFERENCES public.adresse(adresse_id);
+
+
+--
+-- TOC entry 2843 (class 2606 OID 18474)
+-- Name: lignecommande article_lignecommande_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lignecommande
+    ADD CONSTRAINT article_lignecommande_fk FOREIGN KEY (article_reference) REFERENCES public.article(article_reference);
+
+
+--
+-- TOC entry 2837 (class 2606 OID 18459)
+-- Name: article categorie_article_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT categorie_article_fk FOREIGN KEY (categorie_id) REFERENCES public.categorie(categorie_id);
+
+
+--
+-- TOC entry 2831 (class 2606 OID 18464)
+-- Name: categorie categorie_categorie_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categorie
+    ADD CONSTRAINT categorie_categorie_fk FOREIGN KEY (parent_id) REFERENCES public.categorie(categorie_id);
+
+
+--
+-- TOC entry 2838 (class 2606 OID 18484)
+-- Name: adresse client_adresse_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.adresse
+    ADD CONSTRAINT client_adresse_fk FOREIGN KEY (client_id) REFERENCES public.client(client_id);
+
+
+--
+-- TOC entry 2844 (class 2606 OID 18499)
+-- Name: lignecommande commande_lignecommande_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lignecommande
+    ADD CONSTRAINT commande_lignecommande_fk FOREIGN KEY (commande_reference) REFERENCES public.commande(commande_reference);
+
+
+--
+-- TOC entry 2846 (class 2606 OID 18494)
+-- Name: livraison commande_livraison_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livraison
+    ADD CONSTRAINT commande_livraison_fk FOREIGN KEY (commande_reference) REFERENCES public.commande(commande_reference);
+
+
+--
+-- TOC entry 2842 (class 2606 OID 18504)
+-- Name: statutcommande commande_statutcommande_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statutcommande
+    ADD CONSTRAINT commande_statutcommande_fk FOREIGN KEY (commande_reference) REFERENCES public.commande(commande_reference);
+
+
+--
+-- TOC entry 2829 (class 2606 OID 18444)
+-- Name: roleemploye employe_role_employe_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roleemploye
+    ADD CONSTRAINT employe_role_employe_fk FOREIGN KEY (employe_id) REFERENCES public.employe(employe_id);
+
+
+--
+-- TOC entry 2834 (class 2606 OID 18469)
+-- Name: composition ingredient_composition_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.composition
+    ADD CONSTRAINT ingredient_composition_fk FOREIGN KEY (ingredient_reference) REFERENCES public.ingredient(ingredient_reference);
+
+
+--
+-- TOC entry 2847 (class 2606 OID 18509)
+-- Name: facture livraison_facture_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.facture
+    ADD CONSTRAINT livraison_facture_fk FOREIGN KEY (livraison_id) REFERENCES public.livraison(livraison_id);
+
+
+--
+-- TOC entry 2836 (class 2606 OID 18434)
+-- Name: article recette_article_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT recette_article_fk FOREIGN KEY (recette_id) REFERENCES public.recette(recette_id);
+
+
+--
+-- TOC entry 2833 (class 2606 OID 18439)
+-- Name: composition recette_composition_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.composition
+    ADD CONSTRAINT recette_composition_fk FOREIGN KEY (recette_id) REFERENCES public.recette(recette_id);
+
+
+--
+-- TOC entry 2830 (class 2606 OID 18449)
+-- Name: roleemploye role_role_employe_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roleemploye
+    ADD CONSTRAINT role_role_employe_fk FOREIGN KEY (role_id) REFERENCES public.role(role_id);
+
+
+--
+-- TOC entry 2839 (class 2606 OID 18454)
+-- Name: commande roleemploye_commande_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.commande
+    ADD CONSTRAINT roleemploye_commande_fk FOREIGN KEY (roleemploye_id) REFERENCES public.roleemploye(roleemploye_id);
+
+
+--
+-- TOC entry 2841 (class 2606 OID 18419)
+-- Name: statutcommande statut_statutcommande_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.statutcommande
+    ADD CONSTRAINT statut_statutcommande_fk FOREIGN KEY (statut_id) REFERENCES public.statut(statut_id);
+
+
+--
+-- TOC entry 2835 (class 2606 OID 18429)
+-- Name: article stock_article_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT stock_article_fk FOREIGN KEY (stock_id) REFERENCES public.stock(stock_id);
+
+
+--
+-- TOC entry 2832 (class 2606 OID 18424)
+-- Name: ingredient stock_ingredient_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ingredient
+    ADD CONSTRAINT stock_ingredient_fk FOREIGN KEY (stock_id) REFERENCES public.stock(stock_id);
+
+
+--
+-- TOC entry 2840 (class 2606 OID 18479)
+-- Name: commande utilisateur_commande_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.commande
+    ADD CONSTRAINT utilisateur_commande_fk FOREIGN KEY (client_id) REFERENCES public.client(client_id);
+
+
+-- Completed on 2019-02-11 22:02:46
+
+--
+-- PostgreSQL database dump complete
+--
+

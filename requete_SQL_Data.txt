@@ -1,0 +1,161 @@
+
+insert into public.stock (nom, quantite, unite ) values 
+('pate à pizza fine', 400, 'unité'),
+('pate à pizza épaisse', 400, 'unité'),
+('sauce tomate', 100, 'litre'),
+('tomate', 3000, 'gramme'),
+('lardon', 2000, 'gramme'),
+('crème fraiche', 30, 'pot'),
+('champignon', 4000, 'gramme'),
+('jambon', 5000, 'gramme'),
+('mozzaella', 3000, 'gramme'),
+('ognion', 2000, 'gramme'),
+('viande haché', 3000, 'gramme'),
+('poivron', 2000, 'gramme'),
+('oeuf', 250, 'unité'),
+('caco cola 33ml', 300, 'unité'),
+('caco cola 125ml', 50, 'unité'),
+('fanto 33ml', 300, 'unité'),
+('sprute 33ml', 100, 'unité'),
+('glace mika', 50, 'unité'),
+('glace hagendouce', 250, 'unité'),
+('brownie papy brossette', 100, 'unité'),
+('sucette', 250, 'unité');
+
+insert into public.recette (nom, recette) values 
+('margarita pate fine', 'étaler la pâte fine, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage'),
+('margarita pate épaisse', 'étaler la pâte épaisse, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage'),
+('calzone pate fine', 'étaler la pâte fine, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage, cassez un oeuf, repliez la pâte'),
+('calzone pate épaisse', 'étaler la pâte épaisse, puis mettre la sauce tomate, ensuite le jambon et les champignons, mettez le fromage, cassez un oeuf, repliez la pâte');
+
+insert into public.ingredient (nom, quantite, stock_id) values 
+('pate à pizza fine', 1, 1),
+('pate à pizza épaisse', 1, 2),
+('sauce tomate', 0.03, 3),
+('tomate', 30, 4),
+('lardon', 20, 5),
+('crème fraiche', 0.5, 6),
+('champignon', 40, 7),
+('jambon', 30, 8),
+('mozzaella', 30, 9),
+('ognion', 20, 10),
+('viande haché', 30, 10),
+('poivron', 20, 12),
+('oeuf', 1, 13);
+
+insert into public.composition (ingredient_reference, recette_id) values
+(1, 1),
+(1, 3),
+(2, 2),
+(2, 4),
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 4),
+(7, 1),
+(7, 2),
+(7, 3),
+(7, 4),
+(8, 1),
+(8, 2),
+(8, 3),
+(8, 4),
+(9, 1),
+(9, 2),
+(9, 3),
+(9, 4),
+(13, 3),
+(13, 4);
+
+insert into public.categorie (nom, parent_id) values
+('menu principal', null),
+('pizza', 1),
+('boisson', 1),
+('dessert',1);
+
+
+insert into public.article (nom, description, prix_ht, tva_100, categorie_id, stock_id, recette_id) values
+('magarita pate fine', 'Savoureuse pizza à pâte fine sur base tomate au jambon,champignons et mozzarella', 10, 5.5, 2, null, 1),
+('magarita pate epaisse', 'Savoureuse pizza à la pâte américaine sur base tomate au jambon,champignons et mozzarella', 12, 5.5, 2, null, 2),
+('calzone pate fine', 'Savoureuse pizza à pâte fine en chausson sur base tomate au jambon,champignons et mozzarella', 11, 5.5, 2, null, 3),
+('calzone pate epaisse', 'Savoureuse pizza à la pâte américaine en chausson sur base tomate au jambon,champignons et mozzarella', 13, 5.5, 2, null, 4),
+('caco cola 33ml', 'boisson pétillante rafréchissante au cola', 2, 5.5, 3, 14, null),
+('fanto 33ml', 'boisson pétillante rafréchissante à l orange avec des vrai faux fruit dedans', 2, 5.5, 3, 16, null),
+('sprute 33ml', 'limonade rafréchissante au citron', 2, 5.5, 3, 17, null),
+('glace mika', 'cône au chocholat', 3, 5.5, 4, 18, null),
+('brownie papy brossette', 'gâteau au chocolat au lait', 1, 5.5, 4, 20, null);
+
+insert into public.employe (nom, prenom, adresse_mail, num_tel, mot_de_passe) values 
+('Dupont', 'inconnu', 'dupont@pj_de_paris.gouv', 0123456789, 'jediraismemeplus'),
+('Dupond', 'inconnu', 'dupond@pj_de_paris.gouv', 0123456789, 'jediraismemeplus'),
+('Tournesol', 'Tryphon', 'tournesol@syldavie.sy', 0011223344, 'zouave'),
+('Castafiore', 'Bianca', 'castabianca@opera_milanais.it', 9876543210, 'cne_krapock');
+
+
+insert into public.role (nom) values 
+('cuisinier'),
+('livreur'),
+('hôte de caisse'),
+('gérant');
+
+insert into public.roleemploye (role_id, employe_id) values
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 1),
+(3, 2),
+(4, 4);
+
+insert into public.client (nom, prenom, adresse_mail, num_tel, mot_de_passe) values 
+('Martinez', 'François', 'martinezfrancois@bla.com', 0123456789, 'lemotdepasse'),
+('Simon', 'Cussoné', 'SimonCussoné@blu.net', 9876543210, 'lemotdepousse'),
+('Robert', 'Hue', 'Robertdu75@bla.net', 1111111111, 'cherchetoujours');
+
+insert into public.adresse (destinataire, voie, code_postal, localite, adresse_facturation, client_id) values 
+('Martinez Francois', '5 rue de la requete' ,75011, 'Paris', true, 1),
+('Simon Cussoné', '5 rue de l heure' ,75012, 'Paris', true, 2),
+('Robert Hue', '5 rue de l heure' ,75011, 'Paris', true, 3);
+
+insert into public.adresse (destinataire, complement_destinataire, voie, complement_etage, code_postal, localite, adresse_facturation, client_id) values 
+('Robert Hue', 'chez Pierrette Michel', '30A rue saint Paul', '4 eme etage', 75010, 'Paris', false, 3);
+
+insert into public.commande (client_id, date, roleemploye_id) values 
+(1, '2019-01-30 20:30:02', 4),
+(2, '2019-01-31 11:58:12', null),
+(3, '2019-01-31 12:00:20', null);
+
+insert into public.lignecommande (article_reference, commande_reference, quantite) values 
+(1, 1, 2),
+(5, 1, 1),
+(2, 2, 1),
+(4, 2, 1),
+(1, 3, 3),
+(6, 3, 3);
+
+insert into public.statut (status ) values 
+('dans le panier'),
+('commandé'),
+('préparation en cours'),
+('préparé'),
+('en cours de livraison'),
+('terminé');
+
+insert into public.statutcommande (commande_reference, statut_id, date) values 
+(1, 1, '2019-01-30 20:28:37'),
+(1, 2, '2019-01-30 20:30:02'),
+(1, 3, '2019-01-30 20:30:42'),
+(1, 4, '2019-01-30 20:45:42'),
+(1, 5, '2019-01-30 20:47:01'),
+(1, 6, '2019-01-30 20:52:58'),
+(2, 1, '2019-01-31 11:56:11'),
+(2, 2, '2019-01-31 11:58:12'),
+(2, 3, '2019-01-31 12:01:03'),
+(3, 1, '2019-01-31 11:58:00'),
+(3, 2, '2019-01-31 12:00:20'),
+(3, 3, '2019-01-31 12:01:04');
+
+insert into public.livraison (commande_reference, date, adresse_id) values 
+(1, '2019-01-30 20:52:58', 1);
+
+insert into public.facture (total_ht, total_tva, date, livraison_id) values 
+(22, 1.21, '2019-01-30 20:52:58', 1);
